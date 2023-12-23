@@ -1,0 +1,39 @@
+name: Release & Publish to github
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache dependencies dependencies
+        id: node-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: yarn --ignore-scripts --prefer-offline --frozen-lockfile
+
+      - name: Initialize Git user
+        run: |
+          git config --global user.name "$GITHUB_ACTOR"
+          git config --global user.email "$GITHUB_ACTOR_EMAIL"
+
+      - name: Run Release
+        run: |
+          yarn global add release-it
+          release-it --ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
