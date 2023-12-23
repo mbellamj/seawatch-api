@@ -7,6 +7,7 @@ module.exports = {
     tagName: `v${version}`,
     commitMessage: `chore(release): Bumping ${name} to version v${version}`,
     requireCommits: true,
+    requireCommitsFail: false,
   },
   hooks: {
     'before:init': [
