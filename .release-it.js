@@ -6,15 +6,16 @@ module.exports = {
     requireBranch: 'main',
     tagName: `v${version}`,
     commitMessage: `chore(release): Bumping ${name} to version v${version}`,
+    requireCommits: true,
   },
   hooks: {
     'before:init': [
       'git pull',
-      'npm run lint',
       'npm run format',
+      'npm run lint',
       'npm run test',
-      'git add --all',
     ],
+    'before:git:release': ['git add --all'],
     'after:bump': 'npx auto-changelog -p',
   },
   npm: {
