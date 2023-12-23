@@ -1,11 +1,12 @@
-import { ModuleConfig } from '@interfaces/module.config';
+import { ModuleConfig } from './module.config';
 import { IRedisModuleOptions } from '@libraries/redis/interfaces';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Genre } from './genre.entity';
-import { MODULE_NAME } from './name';
+import { Genre } from '../entities';
+
+export const GENRE_CONFIG_TOKEN = 'genre'.toUpperCase();
 
 export function getGenreDatabaseConfig(): TypeOrmModuleOptions {
-  const module = new ModuleConfig(MODULE_NAME);
+  const module = new ModuleConfig(GENRE_CONFIG_TOKEN);
 
   let sslConfig = {};
   if (module.USE_SSL) {
@@ -20,7 +21,7 @@ export function getGenreDatabaseConfig(): TypeOrmModuleOptions {
   }
 
   return {
-    name: MODULE_NAME,
+    name: GENRE_CONFIG_TOKEN,
     type: 'mysql',
     database: module.DATABASE_NAME,
     host: module.DATABASE_HOST,
@@ -37,10 +38,10 @@ export function getGenreDatabaseConfig(): TypeOrmModuleOptions {
 }
 
 export function getGenreRedisConfig(): IRedisModuleOptions {
-  const module = new ModuleConfig(MODULE_NAME);
+  const module = new ModuleConfig(GENRE_CONFIG_TOKEN);
 
   return {
-    name: MODULE_NAME,
+    name: GENRE_CONFIG_TOKEN,
     ssl: module.USE_SSL,
     host: module.REDIS_HOST,
     port: module.REDIS_PORT,

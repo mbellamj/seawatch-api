@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@interfaces/*": ["src/interfaces/*"],
+      "@core/*": ["src/core/*"],
       "@libraries/*": ["src/libraries/*"],
       "@modules/*": ["src/modules/*"]
     }

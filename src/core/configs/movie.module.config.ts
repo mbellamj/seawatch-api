@@ -1,11 +1,11 @@
-import { ModuleConfig } from '@interfaces/module.config';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Category } from './database-service/category.entity';
-import { MODULE_NAME } from './name';
+import { ModuleConfig } from './module.config';
 import { IRedisModuleOptions } from '@libraries/redis/interfaces';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export function getCategoryDatabaseConfig(): TypeOrmModuleOptions {
-  const module = new ModuleConfig(MODULE_NAME);
+export const MOVIE_CONFIG_TOKEN = 'movie'.toUpperCase();
+
+export function getMovieDatabaseConfig(): TypeOrmModuleOptions {
+  const module = new ModuleConfig(MOVIE_CONFIG_TOKEN);
 
   let sslConfig = {};
   if (module.USE_SSL) {
@@ -20,29 +20,25 @@ export function getCategoryDatabaseConfig(): TypeOrmModuleOptions {
   }
 
   return {
-    name: MODULE_NAME,
-    type: 'postgres',
-    database: module.DATABASE_NAME,
+    name: MOVIE_CONFIG_TOKEN,
+    type: 'mongodb',
+    // database: module.DATABASE_NAME,
     host: module.DATABASE_HOST,
     port: module.DATABASE_PORT,
     username: module.DATABASE_USERNAME,
     password: module.DATABASE_PASSWORD,
-    schema: 'public',
-    connectTimeoutMS: 2000,
     autoLoadEntities: true,
-    // logging: 'all',
+    logging: 'all',
     synchronize: true,
     migrationsRun: true,
-    entities: [Category],
     ...sslConfig,
   };
 }
 
-export function getCategoryRedisConfig(): IRedisModuleOptions {
-  const module = new ModuleConfig(MODULE_NAME);
-
+export function getMovieRedisConfig(): IRedisModuleOptions {
+  const module = new ModuleConfig(MOVIE_CONFIG_TOKEN);
   return {
-    name: MODULE_NAME,
+    name: MOVIE_CONFIG_TOKEN,
     ssl: module.USE_SSL,
     host: module.REDIS_HOST,
     port: module.REDIS_PORT,

@@ -3,9 +3,7 @@ import { MovieController } from './movie.controller';
 import { MovieService } from './movie.service';
 
 @Module({
-  imports: [
-    // RedisModule.forRoot(genreRedisModuleConfig, MODULE_NAME),
-  ],
+  imports: [],
   providers: [MovieService],
   controllers: [MovieController],
 })

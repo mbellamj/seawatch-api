@@ -1,4 +1,4 @@
-import { IException } from '@interfaces/exception.interface';
+import { IException } from '@core/interfaces/exception.interface';
 
 export class DatabaseException {
   public static ENTITY_NOT_FOUND_ERROR: IException = {
