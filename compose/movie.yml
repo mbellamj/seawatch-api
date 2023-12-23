@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  database:
+    image: mongo:4.4.26
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=movieDbBoy
+      - MONGO_INITDB_ROOT_PASSWORD=movieDbBoy
+      - MONGO_INITDB_DATABASE=movies
+    volumes:
+      - movies-database:/var/lib/data
+      - ./scripts/init_mongodb.sh:/docker-entrypoint-initdb.d/init.sh:ro
+
+  redis:
+    image: 'redis:alpine'
+    restart: unless-stopped
+    command: ['redis-server', '/etc/redis/redis.conf']
+    ports:
+      - '6381:6379'
+    volumes:
+      - ./acl.conf:/etc/redis/users.acl
+      - ./redis.conf:/etc/redis/redis.conf
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli', 'ping']
+      interval: 10s
+      retries: 5
+      timeout: 5s

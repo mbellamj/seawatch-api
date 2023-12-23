@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres:alpine3.18
+    restart: unless-stopped
+    ports:
+      - '5770:5432'
+    environment:
+      - POSTGRES_USER=categoryDbBoy
+      - POSTGRES_PASSWORD=categoryDbBoy
+      - POSTGRES_DB=categories
+    volumes:
+      - categories-database:/var/lib/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U categoryDbBoy -d categories']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: 'redis:alpine'
+    restart: unless-stopped
+    command: ['redis-server', '/etc/redis/redis.conf']
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./acl.conf:/etc/redis/users.acl
+      - ./redis.conf:/etc/redis/redis.conf
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli', 'ping']
+      interval: 10s
+      retries: 5
+      timeout: 5s

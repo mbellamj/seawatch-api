@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  db_categories:
+    extends:
+      file: compose/category.yml
+      service: database
+
+  cache_categories:
+    extends:
+      file: compose/category.yml
+      service: redis
+
+  db_genres:
+    extends:
+      file: compose/genre.yml
+      service: database
+
+  cache_genres:
+    extends:
+      file: compose/genre.yml
+      service: redis
+
+  db_movies:
+    extends:
+      file: compose/movie.yml
+      service: database
+
+  cache_movies:
+    extends:
+      file: compose/movie.yml
+      service: redis
+
+volumes:
+  categories-database:
+  genres-database:
+  movies-database:
+
+networks:
+  database-network:
+    driver: bridge
+
+  redis-network:
+    driver: bridge
+# secrets:
+#   mongo_root_secrets:
+#     file: ./root_password.txt
