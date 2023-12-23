@@ -8,6 +8,7 @@ module.exports = {
     commitMessage: `chore(release): Bumping ${name} to version v${version}`,
     requireCommits: true,
     requireCommitsFail: false,
+    requireCleanWorkingDir: false,
   },
   hooks: {
     'before:init': [
@@ -16,7 +17,6 @@ module.exports = {
       'npm run lint',
       'npm run test',
     ],
-    'before:git:release': ['git add --all'],
     'after:bump': 'npx auto-changelog -p',
   },
   npm: {
