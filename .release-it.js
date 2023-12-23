@@ -13,6 +13,7 @@ module.exports = {
       'npm run lint',
       'npm run format',
       'npm run test',
+      'git add --all',
     ],
     'after:bump': 'npx auto-changelog -p',
   },
