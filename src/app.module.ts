@@ -1,25 +1,16 @@
-import { RedisModule } from '@libraries/redis';
-import { DatabaseModule } from '@modules/database/database.module';
-
-import {
-  getCategoryRedisConfig,
-  getGenreRedisConfig,
-  getMovieRedisConfig,
-} from '@core/configs';
 import { CategoryModule } from '@modules/category';
+import { DatabaseModule } from '@modules/database';
 import { GenreModule } from '@modules/genre';
+import { ModuleConfigService } from '@modules/module-config';
 import { MovieModule } from '@modules/movie';
 import { Module } from '@nestjs/common';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
+import { config } from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CacheModule } from './modules/cache/cache.module';
 
-const categoriesModules = [RedisModule.forRoot(getCategoryRedisConfig())];
-
-const genresModules = [RedisModule.forRoot(getGenreRedisConfig())];
-
-const moviesModules = [RedisModule.forRoot(getMovieRedisConfig())];
+config();
 
 @Module({
   imports: [
@@ -29,8 +20,8 @@ const moviesModules = [RedisModule.forRoot(getMovieRedisConfig())];
     GenreModule,
     CategoryModule,
     MovieModule,
-    DatabaseModule,
-    CacheModule,
+    DatabaseModule.forRoot(new ModuleConfigService()),
+    CacheModule.forRoot(new ModuleConfigService()),
   ],
   controllers: [AppController],
   providers: [AppService],

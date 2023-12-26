@@ -1,8 +1,7 @@
-import { Category, Genre } from '@core/entities';
+import { ICategory, IGenre } from '@core/interfaces';
 import { IGenericRepository } from './generic-repository.abstract';
 
 export abstract class IDatabaseService {
-  abstract categories: IGenericRepository<Category>;
-
-  abstract genres: IGenericRepository<Genre>;
+  abstract categories: IGenericRepository<ICategory>;
+  abstract genres: IGenericRepository<IGenre>;
 }

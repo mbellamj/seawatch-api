@@ -24,7 +24,7 @@ export class DatabaseRepository<T> implements IGenericRepository<T> {
   }
 
   get(params: QueryParams<T>): Promise<T> {
-    return this.repository.findOne(params).then((value)=> fromDatabase(value));
+    return this.repository.findOne(params).then((value) => fromDatabase(value));
   }
 
   getAll(params: QueryParams<T>): Promise<IEntityType<T>[]> {
