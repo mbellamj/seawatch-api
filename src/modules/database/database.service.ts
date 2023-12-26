@@ -1,5 +1,4 @@
-import { IDatabaseService } from '@core/abstracts';
-import { IGenericRepository } from '@core/abstracts/generic-repository.abstract';
+import { IDatabaseService, IGenericRepository } from '@core/abstracts';
 import { CATEGORY_CONFIG_TOKEN, GENRE_CONFIG_TOKEN } from '@core/contants';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
