@@ -25,6 +25,7 @@
     "@nestjs/devtools-integration": "^0.1.5",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.1",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.3.1",
     "env-var": "^7.4.1",
@@ -74,6 +75,11 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@core/(.*)": "<rootDir>/core/$1",
+      "@libraries/(.*)": "<rootDir>/libraries/$1",
+      "@modules/(.*)": "<rootDir>/modules/$1"
+    }
   }
 }

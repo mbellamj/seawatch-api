@@ -1,54 +1,27 @@
-import { RedisModule } from '@libraries/redis';
-import {
-  GenreModule,
-  getGenreDatabaseConfig,
-  getGenreRedisConfig,
-} from '@modules/genre';
-import {
-  MovieModule,
-  getMovieDatabaseConfig,
-  getMovieRedisConfig,
-} from '@modules/movie';
+import { CategoryModule } from '@modules/category';
+import { DatabaseModule } from '@modules/database';
+import { GenreModule } from '@modules/genre';
+import { ModuleConfigService } from '@modules/module-config';
+import { MovieModule } from '@modules/movie';
 import { Module } from '@nestjs/common';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {
-  CategoryModule,
-  getCategoryDatabaseConfig,
-  getCategoryRedisConfig,
-} from './modules/category';
+import { CacheModule } from './modules/cache/cache.module';
 
 config();
-
-const categoriesModules = [
-  TypeOrmModule.forRoot(getCategoryDatabaseConfig()),
-  RedisModule.forRoot(getCategoryRedisConfig()),
-  CategoryModule,
-];
-
-const genresModules = [
-  TypeOrmModule.forRoot(getGenreDatabaseConfig()),
-  RedisModule.forRoot(getGenreRedisConfig()),
-  GenreModule,
-];
-
-const moviesModules = [
-  TypeOrmModule.forRoot(getMovieDatabaseConfig()),
-  RedisModule.forRoot(getMovieRedisConfig()),
-  MovieModule,
-];
 
 @Module({
   imports: [
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
     }),
-    ...categoriesModules,
-    ...genresModules,
-    ...moviesModules,
+    GenreModule,
+    CategoryModule,
+    MovieModule,
+    DatabaseModule.forRoot(new ModuleConfigService()),
+    CacheModule.forRoot(new ModuleConfigService()),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -21,7 +21,7 @@ import {
   IRedisModuleOptionsFactory,
   IRedisOptionsFactory,
 } from './interfaces';
-import { REDIS_MODULE_OPTIONS_TOKEN } from './redis.constants';
+import { CACHE_MODULE_OPTIONS_TOKEN } from './redis.constants';
 
 @Global()
 @Module({})
@@ -29,14 +29,14 @@ export class RedisCoreModule implements OnApplicationShutdown {
   private readonly logger = new Logger('RedisModule');
 
   constructor(
-    @Inject(REDIS_MODULE_OPTIONS_TOKEN)
+    @Inject(CACHE_MODULE_OPTIONS_TOKEN)
     private readonly options: IRedisModuleOptions,
     private readonly moduleRef: ModuleRef,
   ) {}
 
   public static forRoot(options: IRedisModuleOptions = {}): DynamicModule {
     const redisModuleOptions: Provider = {
-      provide: REDIS_MODULE_OPTIONS_TOKEN,
+      provide: CACHE_MODULE_OPTIONS_TOKEN,
       useValue: options,
     };
 
@@ -71,7 +71,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
           options.redisOptionsFactory,
         );
       },
-      inject: [REDIS_MODULE_OPTIONS_TOKEN],
+      inject: [CACHE_MODULE_OPTIONS_TOKEN],
     };
 
     const asyncProviders = this.createAsyncProviders(options);
@@ -115,14 +115,14 @@ export class RedisCoreModule implements OnApplicationShutdown {
 
     if (options.useFactory) {
       return {
-        provide: REDIS_MODULE_OPTIONS_TOKEN,
+        provide: CACHE_MODULE_OPTIONS_TOKEN,
         useFactory: options.useFactory,
         inject: options.inject || [],
       };
     }
 
     return {
-      provide: REDIS_MODULE_OPTIONS_TOKEN,
+      provide: CACHE_MODULE_OPTIONS_TOKEN,
       async useFactory(
         optionsFactory: IRedisModuleOptionsFactory,
       ): Promise<IRedisModuleOptions> {
